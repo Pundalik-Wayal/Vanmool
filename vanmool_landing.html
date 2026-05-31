@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Vanmool — Tribal Wisdom. Modern Science. Healthier Lives.</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --earth: #2C1A0E;
+    --bark: #4A2E18;
+    --soil: #7A4E2D;
+    --clay: #B8845A;
+    --sand: #E8D5B7;
+    --cream: #FAF6EF;
+    --leaf: #3D5A2E;
+    --moss: #6B8C52;
+    --mist: #C8D8B8;
+    --accent: #C4622D;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--earth);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* Grain texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.5;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    padding: 1.2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(250,246,239,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(74,46,24,0.08);
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--earth);
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  nav ul {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  nav a {
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--soil);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    padding: 8rem 4rem 6rem 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 5vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--earth);
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-subtitle {
+    margin-top: 2rem;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--soil);
+    max-width: 480px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .hero-cta {
+    margin-top: 3rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .btn-primary {
+    background: var(--earth);
+    color: var(--cream);
+    padding: 0.85rem 2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: var(--bark); transform: translateY(-1px); }
+
+  .btn-secondary {
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--soil);
+    text-decoration: none;
+    border-bottom: 1px solid var(--clay);
+    padding-bottom: 2px;
+    transition: color 0.2s;
+  }
+  .btn-secondary:hover { color: var(--accent); }
+
+  .hero-right {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Decorative botanical illustration using SVG */
+  .hero-illustration {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    animation: fadeIn 1.2s 0.5s forwards;
+  }
+
+  .hero-stat-strip {
+    position: absolute;
+    bottom: 3rem;
+    left: 4rem;
+    display: flex;
+    gap: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 1s forwards;
+  }
+
+  .stat-item { }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--earth);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--soil);
+    margin-top: 0.3rem;
+  }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--clay), transparent);
+    margin: 0 4rem;
+  }
+
+  /* PROBLEM SECTION */
+  .section { padding: 7rem 4rem; }
+
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3.2rem);
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--earth);
+    max-width: 680px;
+  }
+
+  .section-title em { font-style: italic; color: var(--accent); }
+
+  /* TWO-COLUMN CONTRAST */
+  .contrast-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 4rem;
+  }
+
+  .contrast-card {
+    padding: 3rem;
+    position: relative;
+  }
+
+  .contrast-card.urban {
+    background: var(--earth);
+    color: var(--cream);
+  }
+
+  .contrast-card.tribal {
+    background: var(--leaf);
+    color: var(--mist);
+  }
+
+  .contrast-card-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .contrast-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  .contrast-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .contrast-list li {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    padding-left: 1.2rem;
+    position: relative;
+    opacity: 0.85;
+  }
+
+  .contrast-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    opacity: 0.5;
+  }
+
+  /* SOLUTION */
+  .solution-section {
+    padding: 7rem 4rem;
+    background: var(--sand);
+  }
+
+  .solution-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 4rem;
+  }
+
+  .solution-card {
+    background: var(--cream);
+    padding: 2.5rem;
+    border-top: 2px solid var(--accent);
+    transition: transform 0.2s;
+  }
+  .solution-card:hover { transform: translateY(-4px); }
+
+  .solution-card-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    color: var(--clay);
+    font-weight: 300;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .solution-card-title {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--earth);
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.02em;
+  }
+
+  .solution-card-body {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--soil);
+  }
+
+  /* FOUNDER */
+  .founder-section {
+    padding: 7rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .founder-visual {
+    position: relative;
+  }
+
+  .founder-initial-circle {
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: var(--bark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem;
+    font-weight: 300;
+    color: var(--sand);
+    position: relative;
+    z-index: 2;
+  }
+
+  .founder-circle-ring {
+    position: absolute;
+    top: -16px; left: -16px;
+    width: 292px;
+    height: 292px;
+    border-radius: 50%;
+    border: 1px solid var(--clay);
+    z-index: 1;
+  }
+
+  .founder-tag {
+    position: absolute;
+    bottom: -1rem;
+    right: -2rem;
+    background: var(--accent);
+    color: var(--cream);
+    padding: 0.6rem 1.2rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    z-index: 3;
+  }
+
+  .founder-text { }
+
+  .founder-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--earth);
+    margin-bottom: 0.3rem;
+  }
+
+  .founder-role {
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+
+  .founder-bio {
+    font-size: 0.95rem;
+    line-height: 1.85;
+    color: var(--soil);
+    margin-bottom: 1.5rem;
+  }
+
+  .credential-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .credential-list li {
+    font-size: 0.82rem;
+    color: var(--bark);
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .credential-list li::before {
+    content: '✦';
+    position: absolute;
+    left: 0;
+    font-size: 0.5rem;
+    top: 0.2rem;
+    color: var(--accent);
+  }
+
+  /* VISION */
+  .vision-section {
+    padding: 7rem 4rem;
+    background: var(--earth);
+    color: var(--cream);
+    text-align: center;
+  }
+
+  .vision-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 3vw, 3rem);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.4;
+    max-width: 760px;
+    margin: 0 auto 2rem;
+    color: var(--sand);
+  }
+
+  .vision-sub {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: var(--clay);
+    max-width: 560px;
+    margin: 0 auto 3rem;
+  }
+
+  /* CONTACT */
+  .contact-section {
+    padding: 5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(74,46,24,0.12);
+  }
+
+  .contact-left .contact-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .contact-left h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: var(--earth);
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-end;
+  }
+
+  .contact-links a {
+    font-size: 0.85rem;
+    color: var(--soil);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .contact-links a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    padding: 1.5rem 4rem;
+    background: var(--earth);
+    color: var(--clay);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    nav ul { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 7rem 1.5rem 3rem; }
+    .hero-right { display: none; }
+    .hero-stat-strip { left: 1.5rem; bottom: 2rem; gap: 2rem; }
+    .section { padding: 4rem 1.5rem; }
+    .contrast-grid { grid-template-columns: 1fr; }
+    .solution-section { padding: 4rem 1.5rem; }
+    .solution-grid { grid-template-columns: 1fr; }
+    .founder-section { grid-template-columns: 1fr; padding: 4rem 1.5rem; gap: 3rem; }
+    .vision-section { padding: 4rem 1.5rem; }
+    .contact-section { flex-direction: column; gap: 2rem; align-items: flex-start; padding: 3rem 1.5rem; }
+    .contact-links { align-items: flex-start; }
+    footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Van<span>mool</span></a>
+  <ul>
+    <li><a href="#problem">The Problem</a></li>
+    <li><a href="#solution">Our Approach</a></li>
+    <li><a href="#founder">Founder</a></li>
+    <li><a href="#contact">Connect</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Tribal Wisdom · Modern Science · Better Health</p>
+    <h1 class="hero-title">
+      Your ancestors<br/>
+      <em>knew</em> what your<br/>
+      gut needs.
+    </h1>
+    <p class="hero-subtitle">
+      Vanmool bridges the microbiome science of tribal food traditions with the health crises of modern urban India — through education, research, and products you can trust.
+    </p>
+    <div class="hero-cta">
+      <a href="#solution" class="btn-primary">Explore the Venture</a>
+      <a href="#founder" class="btn-secondary">Meet the Founder</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <!-- Botanical SVG illustration -->
+    <svg class="hero-illustration" viewBox="0 0 500 700" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <!-- Background wash -->
+      <rect width="500" height="700" fill="#E8D5B7" opacity="0.4"/>
+      <!-- Large leaf forms -->
+      <ellipse cx="320" cy="200" rx="90" ry="40" fill="#3D5A2E" opacity="0.15" transform="rotate(-35 320 200)"/>
+      <ellipse cx="180" cy="320" rx="110" ry="38" fill="#3D5A2E" opacity="0.12" transform="rotate(20 180 320)"/>
+      <ellipse cx="350" cy="420" rx="85" ry="32" fill="#6B8C52" opacity="0.18" transform="rotate(-50 350 420)"/>
+      <!-- Stem lines -->
+      <path d="M250 680 Q260 500 230 300 Q220 180 280 80" stroke="#4A2E18" stroke-width="1.5" fill="none" opacity="0.3"/>
+      <path d="M250 680 Q240 490 270 310" stroke="#4A2E18" stroke-width="1" fill="none" opacity="0.2"/>
+      <!-- Leaf shapes -->
+      <path d="M230 300 Q160 260 140 180 Q200 200 230 300Z" fill="#3D5A2E" opacity="0.25"/>
+      <path d="M240 400 Q310 360 350 280 Q290 310 240 400Z" fill="#6B8C52" opacity="0.2"/>
+      <path d="M235 180 Q180 130 200 60 Q250 100 235 180Z" fill="#3D5A2E" opacity="0.2"/>
+      <!-- Small botanical dots -->
+      <circle cx="200" cy="240" r="4" fill="#7A4E2D" opacity="0.3"/>
+      <circle cx="310" cy="350" r="3" fill="#7A4E2D" opacity="0.25"/>
+      <circle cx="160" cy="420" r="5" fill="#B8845A" opacity="0.2"/>
+      <circle cx="380" cy="500" r="3" fill="#7A4E2D" opacity="0.2"/>
+      <!-- Spore/seed elements -->
+      <circle cx="270" cy="120" r="2" fill="#C4622D" opacity="0.4"/>
+      <circle cx="285" cy="110" r="1.5" fill="#C4622D" opacity="0.3"/>
+      <circle cx="260" cy="105" r="1" fill="#C4622D" opacity="0.3"/>
+      <!-- Grid overlay -->
+      <line x1="0" y1="350" x2="500" y2="350" stroke="#4A2E18" stroke-width="0.5" opacity="0.06"/>
+      <line x1="250" y1="0" x2="250" y2="700" stroke="#4A2E18" stroke-width="0.5" opacity="0.06"/>
+      <!-- Circular annotation -->
+      <circle cx="280" cy="350" r="120" stroke="#B8845A" stroke-width="0.5" fill="none" opacity="0.2" stroke-dasharray="4 6"/>
+      <!-- Text label -->
+      <text x="250" y="655" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="11" fill="#4A2E18" opacity="0.4" letter-spacing="3">VANMOOL</text>
+    </svg>
+  </div>
+
+  <div class="hero-stat-strip">
+    <div class="stat-item">
+      <div class="stat-num">101M</div>
+      <div class="stat-label">Indians with T2DM</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">700+</div>
+      <div class="stat-label">Tribal food traditions</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">0</div>
+      <div class="stat-label">Science-backed bridges</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="section" id="problem">
+  <div class="reveal">
+    <p class="section-label">The Problem</p>
+    <h2 class="section-title">
+      Urban India is getting sicker.<br/>
+      Tribal India is <em>not</em>.
+    </h2>
+  </div>
+
+  <div class="contrast-grid reveal">
+    <div class="contrast-card urban">
+      <p class="contrast-card-label">Urban India — 2026</p>
+      <h3 class="contrast-card-title">A diet that is destroying the gut</h3>
+      <ul class="contrast-list">
+        <li>Ultra-processed foods stripped of fibre and fermented cultures</li>
+        <li>Rising rates of type 2 diabetes, hypertension, and obesity</li>
+        <li>Disrupted gut microbiome — low diversity, high inflammation</li>
+        <li>No connection to the food traditions that once protected us</li>
+        <li>Health advice that is generic, expensive, and disconnected from roots</li>
+      </ul>
+    </div>
+    <div class="contrast-card tribal">
+      <p class="contrast-card-label">Tribal Communities — Same Country</p>
+      <h3 class="contrast-card-title">Centuries of metabolic protection</h3>
+      <ul class="contrast-list">
+        <li>Whole grains, forest greens, wild herbs, seasonal eating</li>
+        <li>Markedly lower rates of metabolic and gut-related disease</li>
+        <li>Rich fermented food traditions seeding beneficial gut bacteria</li>
+        <li>Deep plant knowledge with real pharmacological basis</li>
+        <li>A food system shaped by ecology, not profit</li>
+      </ul>
+    </div>
+  </div>
+
+  <p style="margin-top: 2.5rem; font-size: 1rem; line-height: 1.85; color: var(--soil); max-width: 700px;" class="reveal">
+    The microbiome science is clear. What tribal communities eat — and how they eat — produces measurably different gut profiles than urban populations. Yet this knowledge is disappearing, undocumented, and untranslated for the millions of urban Indians who need it most.
+  </p>
+</section>
+
+<!-- SOLUTION -->
+<section class="solution-section" id="solution">
+  <div class="reveal">
+    <p class="section-label">Our Approach</p>
+    <h2 class="section-title">
+      Vanmool translates traditional<br/>
+      food wisdom into <em>modern health.</em>
+    </h2>
+  </div>
+
+  <div class="solution-grid">
+    <div class="solution-card reveal">
+      <div class="solution-card-num">01</div>
+      <h3 class="solution-card-title">Science-backed awareness</h3>
+      <p class="solution-card-body">We use microbiome data, multi-omics research, and nutritional science to show urban audiences — clearly and compellingly — what their diet is costing them, and what tribal food traditions offer as an evidence-based alternative.</p>
+    </div>
+    <div class="solution-card reveal">
+      <div class="solution-card-num">02</div>
+      <h3 class="solution-card-title">Validated tribal products</h3>
+      <p class="solution-card-body">A curated product line — tribal grain mixes, wild-herb teas, fermented food starters, and microbiome-validated herbal supplements — ethically sourced from tribal communities, minimally processed, and transparently labelled with the science behind each ingredient.</p>
+    </div>
+    <div class="solution-card reveal">
+      <div class="solution-card-num">03</div>
+      <h3 class="solution-card-title">Community & economic impact</h3>
+      <p class="solution-card-body">Every product creates a dignified, formal economic channel for tribal food producers and foragers — turning ancestral knowledge into livelihoods, while ensuring that the communities whose wisdom built this venture share in its growth.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section class="founder-section" id="founder">
+  <div class="founder-visual reveal">
+    <div class="founder-initial-circle">PW</div>
+    <div class="founder-circle-ring"></div>
+    <div class="founder-tag">Founder</div>
+  </div>
+  <div class="founder-text reveal">
+    <p class="section-label">The Founder</p>
+    <h2 class="founder-name">Pundalik Wayal</h2>
+    <p class="founder-role">MSc Biology · Microbiome Researcher · Tribal Community Member</p>
+    <p class="founder-bio">
+      I grew up in a tribal community in Maharashtra, eating forest foods, fermented grains, and herbs that had no labels but had been trusted for centuries. When I went to university and studied gut microbiome science at CSIR-IGIB, I began to see what I had taken for granted through a scientific lens.
+    </p>
+    <p class="founder-bio">
+      The foods of my childhood were shaping gut microbiome diversity. The herbs were modulating immune pathways. The fermented drinks were seeding beneficial bacteria. Meanwhile, the urban diabetic cohort I was studying showed exactly the microbial imbalances that a tribal diet would help prevent. That contrast became Vanmool.
+    </p>
+    <ul class="credential-list">
+      <li>MSc Biology (Applied Genomics), Ashoka University</li>
+      <li>Master's Thesis Researcher, Ayurgenomics Unit — CSIR-IGIB, New Delhi</li>
+      <li>Abstract accepted, EMBO-EMBL Symposium on Innate Immunity, Heidelberg</li>
+      <li>Executive Program in Data Science for Social Impact, AshokaX & data.org</li>
+      <li>Government of India Merit Scholarship — Tribal Students Academic Excellence</li>
+    </ul>
+  </div>
+</section>
+
+<!-- VISION -->
+<section class="vision-section">
+  <p class="section-label" style="color: var(--clay); margin-bottom: 2rem;">Our Vision</p>
+  <p class="vision-quote reveal">
+    "The answers to India's metabolic health crisis are not in a laboratory yet to be built — they are in the forests and kitchens of communities that have lived them for generations."
+  </p>
+  <p class="vision-sub reveal">
+    Vanmool exists to make that knowledge visible, credible, and accessible — for the urban millions who need it, and the tribal communities who carry it.
+  </p>
+  <a href="#contact" class="btn-primary reveal" style="display: inline-block;">Get in Touch</a>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="contact-left">
+    <p class="contact-label">Connect</p>
+    <h3>Let's build this together.</h3>
+    <p style="font-size: 0.9rem; color: var(--soil); margin-top: 0.5rem; max-width: 400px; line-height: 1.7;">
+      Whether you are a researcher, investor, tribal food producer, or simply someone who believes food is medicine — reach out.
+    </p>
+  </div>
+  <div class="contact-links">
+    <a href="mailto:pundalik.wayal@alumni.ashoka.edu.in">pundalik.wayal@alumni.ashoka.edu.in</a>
+    <a href="https://linkedin.com/in/" target="_blank">LinkedIn Profile</a>
+    <a href="https://github.com/" target="_blank">GitHub</a>
+    <a href="#" target="_blank">Personal Website</a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Vanmool — Tribal Wisdom. Modern Science. Healthier Lives.</span>
+  <span>Early-stage venture · India</span>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
